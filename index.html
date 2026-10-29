@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FieldForms Template Library Vol. 1 — Contractor Document Templates</title>
+<style>
+  :root{
+    --ink:#1c2733; --muted:#5b6b7a; --line:#d7dee5; --bg:#eef1f4; --card:#ffffff;
+    --brand:#14532d; --brand2:#166534; --accent:#b45309; --danger:#b91c1c;
+    --good:#166534; --warn:#b45309;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.45}
+  header.top{background:var(--brand);color:#fff;padding:14px 16px}
+  header.top h1{margin:0;font-size:20px;letter-spacing:.2px}
+  header.top p{margin:2px 0 0;font-size:13px;opacity:.85}
+  nav.tabs{display:flex;flex-wrap:wrap;gap:6px;background:#0e3d21;padding:8px 12px}
+  nav.tabs button{background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;padding:7px 13px;border-radius:20px;font-size:14px;cursor:pointer}
+  nav.tabs button.active{background:#fff;color:var(--brand);font-weight:600}
+  main{max-width:980px;margin:0 auto;padding:14px 12px 60px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+  h2{font-size:18px;margin:0 0 10px}
+  h3{font-size:15px;margin:16px 0 8px;color:var(--brand)}
+  label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:0 0 4px}
+  input[type=text],input[type=date],input[type=time],input[type=number],input[type=search],select,textarea{
+    width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:7px;font-size:15px;background:#fff;color:var(--ink)}
+  textarea{min-height:84px;resize:vertical}
+  textarea.tall{min-height:150px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  @media (max-width:640px){.grid,.grid3{grid-template-columns:1fr}}
+  .frow{margin-bottom:12px}
+  .btn{display:inline-block;background:var(--brand2);color:#fff;border:none;border-radius:7px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer}
+  .btn:hover{background:var(--brand)}
+  .btn.secondary{background:#fff;color:var(--brand);border:1px solid var(--brand)}
+  .btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+  .btn.small{padding:6px 10px;font-size:13px;min-height:40px;}
+  .btn.danger{background:var(--danger)}
+  .btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .typegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+  .typecard{border:1px solid var(--line);border-radius:10px;padding:12px;cursor:pointer;background:#fff;text-align:left;width:100%}
+  .typecard:hover{border-color:var(--brand2)}
+  .typecard .t{font-weight:700;font-size:15px;margin-bottom:4px}
+  .typecard .d{font-size:13px;color:var(--muted)}
+  .docrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border:1px solid var(--line);border-radius:9px;padding:10px 12px;margin-bottom:8px;background:#fff}
+  .docrow .meta{flex:1;min-width:200px}
+  .docrow .meta .tt{font-weight:700}
+  .docrow .meta .ss{font-size:13px;color:var(--muted)}
+  .tag{display:inline-block;font-size:11px;font-weight:700;background:#e7f0e9;color:var(--brand);border-radius:10px;padding:2px 8px;margin-left:6px;vertical-align:middle}
+  .tag.demo{background:#fdf0e0;color:var(--accent)}
+  .notice{border:1px solid #f0d9a8;background:#fffaf0;border-radius:8px;padding:10px 12px;font-size:13px;margin:10px 0}
+  .notice.red{border-color:#f2c1c1;background:#fff5f5}
+  .statusline{font-size:13px;margin-top:8px;min-height:18px}
+  .ok{color:var(--good)} .bad{color:var(--danger)} .warn{color:var(--warn)}
+  table.rows{width:100%;border-collapse:collapse}
+  table.rows th{font-size:12px;text-align:left;color:var(--muted);padding:4px 6px 4px 0}
+  table.rows td{padding:3px 6px 3px 0;vertical-align:top}
+  .rep-row td input,.rep-row td select{padding:7px 8px;font-size:14px}
+  .checkline{display:flex;gap:8px;align-items:flex-start;margin:6px 0}
+  .checkline input{margin-top:3px;width:17px;height:17px;flex:none}
+  .checkline span{font-size:14px}
+  .small{font-size:13px;color:var(--muted)}
+  .hidden{display:none!important}
+  /* ---------- printable sheet ---------- */
+  #sheetPreview{margin-top:14px}
+  .sheet{background:#fff;border:1px solid var(--line);border-radius:4px;padding:34px 38px;color:#111;max-width:820px;margin:0 auto}
+  .sheet .co{text-align:center;border-bottom:2.5px solid #14532d;padding-bottom:10px;margin-bottom:16px}
+  .sheet .co .name{font-size:23px;font-weight:800;letter-spacing:.3px}
+  .sheet .co .sub{font-size:12.5px;color:#444;margin-top:2px}
+  .sheet h1.doc{font-size:19px;text-align:center;margin:6px 0 14px;letter-spacing:.6px;text-transform:uppercase}
+  .sheet h4{font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:#14532d;margin:16px 0 6px;border-bottom:1px solid #ccc;padding-bottom:3px}
+  .sheet p{margin:6px 0;font-size:13.5px}
+  .sheet table.data{width:100%;border-collapse:collapse;margin:8px 0;font-size:13.5px}
+  .sheet table.data th,.sheet table.data td{border:1px solid #bbb;padding:6px 8px;text-align:left;vertical-align:top}
+  .sheet table.data th{background:#f0f3f0;font-size:12px;text-transform:uppercase;letter-spacing:.4px}
+  .sheet .kv{font-size:13.5px;margin:3px 0}
+  .sheet .kv b{display:inline-block;min-width:150px;color:#333}
+  .sheet .total{font-size:16px;font-weight:800}
+  .sheet .siggrid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:30px}
+  .sheet .sig{margin-top:24px}
+  .sheet .sigline{border-bottom:1px solid #111;height:26px;font-family:"Segoe Script","Brush Script MT",cursive;font-size:17px;padding-left:4px}
+  .sheet .sigcap{font-size:11.5px;color:#444;margin-top:3px}
+  .sheet .disc{border:1.5px solid #b45309;background:#fffaf0;padding:9px 12px;font-size:12px;margin:14px 0}
+  .sheet .foot{margin-top:22px;border-top:1px solid #ccc;padding-top:8px;font-size:11.5px;color:#555}
+  .sheet ul{margin:6px 0 6px 18px;padding:0;font-size:13.5px}
+  .sheet li{margin:3px 0}
+  .sheet .lines div{border-bottom:1px solid #bbb;height:26px}
+  @media (max-width:640px){
+    .sheet{padding:20px 14px}
+    .sheet .siggrid{grid-template-columns:1fr}
+    table.rows{display:block;overflow-x:auto}
+    .sheet table.data{display:block;overflow-x:auto}
+  }
+  #printArea{display:none}
+  @media print{
+    body{background:#fff}
+    #app{display:none!important}
+    #printArea{display:block!important}
+    #printArea .sheet{border:none;border-radius:0;max-width:none;padding:6px 4px}
+    @page{margin:14mm}
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1>🌿 FieldForms Template Library — Vol. 1</h1>
+    <p>The other contractor paperwork: bids, agreements, warranties, waivers &amp; more. Companion to FieldForms Toolkit.</p>
+  </header>
+  <nav class="tabs">
+    <button data-tab="library" class="active">📚 Library</button>
+    <button data-tab="editor">✏️ New Document</button>
+    <button data-tab="settings">🏢 Company &amp; Settings</button>
+    <button data-tab="help">❓ Help</button>
+  </nav>
+  <main>
+    <!-- ============ LIBRARY ============ -->
+    <section id="view-library">
+      <div class="card">
+        <h2>Saved documents</h2>
+        <div class="frow"><input type="search" id="searchBox" placeholder="Search by job, customer, document type, or any word inside…"></div>
+        <div id="docList"></div>
+        <div id="libEmpty" class="small hidden">No documents yet. Tap <b>New Document</b> to create one — two sample documents are included so you can see finished sheets right away.</div>
+        <div class="btnrow">
+          <button class="btn ghost" id="btnClearDemo">Clear sample documents</button>
+          <button class="btn ghost" id="btnExport">⬇ Export backup</button>
+          <button class="btn ghost" id="btnImport">⬆ Import backup</button>
+          <input type="file" id="importFile" accept=".json,application/json" class="hidden">
+        </div>
+        <div class="statusline" id="libStatus"></div>
+      </div>
+    </section>
+
+    <!-- ============ EDITOR ============ -->
+    <section id="view-editor" class="hidden">
+      <div class="card" id="typePickerCard">
+        <h2>Choose a template</h2>
+        <p class="small">Eight documents FieldForms Toolkit doesn't cover. Fill in the form — the app builds a clean, branded, printable sheet with signature lines where they're needed.</p>
+        <div class="typegrid" id="typeGrid"></div>
+      </div>
+      <div class="card hidden" id="editorCard">
+        <h2 id="editorTitle"></h2>
+        <div id="legalBanner"></div>
+        <form id="docForm" autocomplete="off"></form>
+        <div class="statusline" id="editorStatus"></div>
+        <div class="btnrow">
+          <button class="btn" id="btnSaveDoc">💾 Save document</button>
+          <button class="btn secondary" id="btnPreview">👁 Preview sheet</button>
+          <button class="btn secondary" id="btnPrintDoc">🖨 Print / save PDF</button>
+          <button class="btn ghost" id="btnBackToTypes">← All templates</button>
+        </div>
+        <div id="sheetPreview"></div>
+      </div>
+    </section>
+
+    <!-- ============ SETTINGS ============ -->
+    <section id="view-settings" class="hidden">
+<div class="card"><h3 style="margin-top:0">Legal</h3><p>Terms of Use, the applicable disclaimer, our privacy statement, and your recorded acceptance.</p><button type="button" class="btn ww-legal-open-btn" data-ww-legal="1">⚖️ Legal — Terms, Disclaimer &amp; Privacy</button></div>
+      <div class="card">
+        <h2>Company profile</h2>
+        <p class="small">Printed at the top of every sheet. Set it once.</p>
+        <div class="grid">
+          <div class="frow"><label>Company name</label><input type="text" id="s_company"></div>
+          <div class="frow"><label>Tagline / logo text (optional)</label><input type="text" id="s_tagline"></div>
+          <div class="frow"><label>Phone</label><input type="text" id="s_phone"></div>
+          <div class="frow"><label>Email</label><input type="text" id="s_email"></div>
+          <div class="frow"><label>License # (optional)</label><input type="text" id="s_license"></div>
+          <div class="frow"><label>Website (optional)</label><input type="text" id="s_website"></div>
+        </div>
+        <div class="frow"><label>Address</label><input type="text" id="s_address"></div>
+        <div class="btnrow"><button class="btn" id="btnSaveSettings">💾 Save company profile</button></div>
+        <div class="statusline" id="setStatus"></div>
+      </div>
+      <div class="card">
+        <h2>Data</h2>
+        <p class="small">Everything lives in this browser on this device only — nothing is uploaded anywhere. Export a backup before switching devices or clearing browser data.</p>
+        <div class="btnrow">
+          <button class="btn danger" id="btnEraseAll">Erase ALL data (documents + settings)</button>
+        </div>
+        <div class="statusline" id="dataStatus"></div>
+      </div>
+    </section>
+
+    <!-- ============ HELP ============ -->
+    <section id="view-help" class="hidden">
+      <div class="card">
+        <h2>How this library works</h2>
+        <p><b>FieldForms Template Library Vol. 1</b> is the companion to <b>FieldForms Toolkit</b>. The Toolkit covers change orders, punch lists, daily logs, and job safety assessments. This library covers the <i>other</i> paperwork — the documents that frame a job before it starts and close it out when it ends:</p>
+        <ul>
+          <li><b>Bid / Proposal Cover Sheet</b> — scope, exclusions, allowances, payment schedule, and an acceptance signature, so a "yes" is on paper.</li>
+          <li><b>Subcontractor Agreement (short form)</b> — scope, pay terms, and insurance/license representations with signatures.</li>
+          <li><b>Warranty Letter</b> — your workmanship warranty in writing: what's covered, what isn't, and how to make a claim.</li>
+          <li><b>Final Walkthrough &amp; Acceptance Certificate</b> — the customer's signed statement that the job is complete and accepted. (Different from a punch list: this is the finish line, not the to-do list.)</li>
+          <li><b>Lien Waiver</b> — conditional or unconditional, progress or final payment variants.</li>
+          <li><b>Incident / Near-Miss Report</b> — site safety documentation for injuries, near misses, and damage.</li>
+          <li><b>Delivery Receipt Log</b> — who received what material, when, and in what condition.</li>
+          <li><b>Testimonial &amp; Photo Release</b> — written permission to use a happy customer's words and job photos in your marketing.</li>
+        </ul>
+        <h3>Workflow</h3>
+        <p>Fill in the form, tap <b>Preview sheet</b> to see exactly what prints, then <b>Print / save PDF</b>. Signatures are typed names printed in script style on the signature line — for maximum formality, have the signer also sign the printed sheet by hand. Use <b>Duplicate</b> in the library to reuse a good document's wording on the next job.</p>
+        <h3>About the legal templates — read this</h3>
+        <div class="notice red"><b>These templates are general-purpose forms, not legal advice.</b> They do not create an attorney–client relationship, and no template can fit every state, trade, or situation. Lien-waiver rules in particular vary by state — several states require their own statutory forms. Have a licensed attorney in your state review the subcontractor agreement and lien waiver before you rely on them, and follow your state's rules where they exist.</div>
+        <h3>Your data</h3>
+        <p>Documents and settings are stored only in this browser on this device (localStorage). Nothing is uploaded, tracked, or shared. Use <b>Export backup</b> in the Library to save a copy or move to a new device; <b>Import backup</b> restores it (importing replaces what's here, so export first if you have documents you want to keep).</p>
+        <h3>Samples</h3>
+        <p>Two sample documents (a bid cover sheet and a warranty letter for a kitchen remodel) are loaded so you can see finished sheets immediately. <b>Clear sample documents</b> in the Library removes them and never touches your real documents.</p>
+      </div>
+    </section>
+  </main>
+</div>
+<div id="printArea"></div>
+<script>
+'use strict';
+/* ================= utilities ================= */
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function uid(){return 'd'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
+function todayISO(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function num(v){var n=parseFloat(String(v==null?'':v).replace(/[^0-9.\-]/g,''));return isFinite(n)?n:0;}
+function fmtMoney(v){var n=num(v);if(!isFinite(n))n=0;return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtDate(iso){
+  if(!iso||typeof iso!=='string')return '';
+  var p=iso.split('-');if(p.length!==3)return iso;
+  var d=new Date(+p[0],+p[1]-1,+p[2]);if(isNaN(d.getTime()))return iso;
+  return d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+}
+function addYearsClamped(iso,years){
+  var p=String(iso||'').split('-');if(p.length!==3)return '';
+  var y=+p[0],m=+p[1],d=+p[2];if(!y||!m||!d)return '';
+  var ty=y+Math.round(num(years));
+  var dim=new Date(ty,m,0).getDate(); /* days in target month */
+  var dd=Math.min(d,dim);
+  return ty+'-'+String(m).padStart(2,'0')+'-'+String(dd).padStart(2,'0');
+}
+function lines(text){return String(text||'').split('\n').map(function(s){return s.trim();}).filter(function(s){return s.length>0;});}
+
+/* ================= state ================= */
+var KEY='fflib_v1';
+var TYPES={
+  bid:      {label:'Bid / Proposal Cover Sheet', icon:'📄', blurb:'Scope, exclusions, allowances, payment schedule + acceptance signature.'},
+  sub:      {label:'Subcontractor Agreement', icon:'🤝', blurb:'Short-form agreement: scope, pay terms, insurance representations, signatures.', legal:true},
+  warranty: {label:'Warranty Letter', icon:'🛡️', blurb:'Workmanship warranty in writing — coverage, exclusions, claim process.'},
+  walk:     {label:'Final Walkthrough & Acceptance', icon:'🏁', blurb:'The customer signs that the job is complete and accepted.'},
+  lien:     {label:'Lien Waiver', icon:'📜', blurb:'Conditional / unconditional, progress / final payment variants.', legal:true},
+  incident: {label:'Incident / Near-Miss Report', icon:'⚠️', blurb:'Injuries, near misses, and property damage — documented while it\u2019s fresh.'},
+  delivery: {label:'Delivery Receipt Log', icon:'🚚', blurb:'Who received what material, when, and in what condition.'},
+  release:  {label:'Testimonial & Photo Release', icon:'⭐', blurb:'Written permission to use customer words and job photos in marketing.'}
+};
+var LEGAL_NOTICE='TEMPLATE NOTICE: This document is a general-purpose template provided for convenience only. It is not legal advice, does not create an attorney\u2013client relationship, and may not fit your state, trade, or situation. Laws vary by state and change over time. Have a licensed attorney in your state review it before you rely on it.';
+var LIEN_CAUTION='STATE VARIATION CAUTION: Lien waiver requirements vary widely by state, and several states require their own statutory waiver forms. Verify this form complies with your state\u2019s law — or have a licensed attorney review it — before use. If your state has a statutory form, use that form instead.';
+
+function defaultSettings(){return {company:'',tagline:'',phone:'',email:'',license:'',website:'',address:''};}
+function defaultState(){return {settings:defaultSettings(),docs:[],seeded:false};}
+var state=defaultState();
+function saveState(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function loadState(){
+  try{
+    var raw=localStorage.getItem(KEY);
+    if(raw){var s=JSON.parse(raw);if(s&&typeof s==='object'&&Array.isArray(s.docs)){state={settings:Object.assign(defaultSettings(),s.settings||{}),docs:s.docs,seeded:!!s.seeded,legal:(s.legal&&typeof s.legal==='object')?s.legal:null};return;}}
+  }catch(e){}
+  state=defaultState();
+}
+
+/* ================= per-type defaults ================= */
+function defaultData(type){
+  var co=state.settings.company||'';
+  switch(type){
+    case 'bid':return {job:'',customer:'',customerAddress:'',date:todayISO(),validDays:30,
+      scope:'',exclusions:'',allowances:[],contractPrice:'',
+      schedule:[{milestone:'Due at signing',pct:10},{milestone:'Due at start of work',pct:40},{milestone:'Due at substantial completion',pct:50}],
+      terms:'Work will be performed in a workmanlike manner consistent with industry standards. Any change to the scope above requires a written change order signed by both parties before the changed work begins.',preparedBy:''};
+    case 'sub':return {job:'',jobAddress:'',date:todayISO(),contractor:co,subName:'',subAddress:'',subPhone:'',subLicense:'',
+      scope:'',amount:'',payTerms:'Subcontractor will be paid within 7 business days after Contractor receives payment from the customer for the Subcontractor\u2019s completed and approved work.',
+      startDate:'',completionDate:'',insGL:'',insWC:'',insAuto:'',
+      agreementText:'1. INDEPENDENT CONTRACTOR. Subcontractor is an independent contractor and is solely responsible for its employees, taxes, tools, and means of work.\n2. STANDARD OF WORK. All work will be performed in a workmanlike manner, to code, and to the plans and specifications for the project.\n3. CHANGES. No change to the scope or price is binding unless agreed in writing and signed by both parties before the changed work begins.\n4. SAFETY & CLEANUP. Subcontractor will follow all applicable safety rules, keep its work area clean, and remove its own debris.\n5. INSURANCE & LICENSES. Subcontractor represents that the insurance and licenses listed above are current and will be maintained through completion of the work, and will provide certificates on request.\n6. TERMINATION. Either party may terminate this agreement for cause if the other materially breaches it and does not cure the breach within 3 business days of written notice.\n7. ENTIRE AGREEMENT. This document is the entire agreement for the scope described above and supersedes prior discussions.',
+      contractorSig:'',subSig:''};
+    case 'warranty':return {job:'',jobAddress:'',customer:'',date:todayISO(),completionDate:todayISO(),years:2,
+      covered:'Labor and workmanship performed by us on the project described above. If a defect in our workmanship appears during the warranty period, we will repair or replace the defective work at no charge for labor or for materials we originally supplied that fail due to our installation.',
+      exclusions:'Normal wear and tear; damage from misuse, neglect, or failure to maintain; acts of nature, flooding, fire, or other casualty; work, alterations, or repairs performed by others; pre-existing conditions; and manufacturer defects in materials or equipment (those remain covered, if at all, by the manufacturer\u2019s own warranty).',
+      claimProcess:'To make a claim, notify us in writing (email is fine) describing the problem, within the warranty period. We will schedule an inspection within 10 business days and, for covered defects, complete the repair within a reasonable time after inspection.',
+      sig:''};
+    case 'walk':return {job:'',jobAddress:'',customer:'',date:todayISO(),
+      items:['Exterior & site','Interior finishes & paint','Kitchen','Bathrooms','Flooring','Doors, trim & hardware','Electrical & lighting','Plumbing fixtures','Heating & cooling (HVAC)','Appliances','Final cleaning'].map(function(t){return {item:t,status:'Accepted'};}),
+      statement:'The customer and contractor walked the project together on the date above and inspected the areas listed. The customer accepts the work as complete and conforming to the agreement, except for any items noted below. Final payment is due per the agreement.',
+      notes:'',customerSig:'',contractorSig:''};
+    case 'lien':return {form:'conditional',stage:'progress',claimant:co,owner:'',customer:'',project:'',projectAddress:'',throughDate:todayISO(),amount:'',exceptions:'',sig:'',title:''};
+    case 'incident':return {job:'',location:'',date:todayISO(),time:'',rtype:'Near miss',persons:'',witnesses:'',description:'',actions:'',rootCause:'',corrective:'',reportedBy:'',supervisor:''};
+    case 'delivery':return {job:'',jobAddress:'',entries:[{date:todayISO(),item:'',qty:'',unit:'',supplier:'',po:'',receivedBy:'',condition:'Good'}]};
+    case 'release':return {date:todayISO(),client:'',job:'',testimonial:'',useWords:true,useName:true,usePhotos:false,useWebsite:false,useSocial:false,usePrint:false,sig:''};
+  }
+  return {};
+}
+
+/* ================= pure calculation helpers ================= */
+function bidTotals(d){
+  var allowTotal=0;(d.allowances||[]).forEach(function(a){allowTotal+=num(a.amount);});
+  var price=num(d.contractPrice);var pctTotal=0;
+  var schedule=(d.schedule||[]).map(function(s){var pct=num(s.pct);pctTotal+=pct;return {milestone:s.milestone,pct:pct,amount:price*pct/100};});
+  return {allowTotal:allowTotal,price:price,pctTotal:pctTotal,schedule:schedule};
+}
+function warrantyEndDate(d){return addYearsClamped(d.completionDate,d.years);}
+function deliverySummary(d){
+  var es=d.entries||[];var damaged=0,shortCt=0,refused=0,qtyTotal=0;
+  es.forEach(function(e){qtyTotal+=num(e.qty);if(e.condition==='Damaged')damaged++;if(e.condition==='Short')shortCt++;if(e.condition==='Refused')refused++;});
+  return {count:es.length,damaged:damaged,short:shortCt,refused:refused,qtyTotal:qtyTotal};
+}
+function lienKindLabel(form,stage){return (form==='unconditional'?'Unconditional':'Conditional')+' Waiver — '+(stage==='final'?'Final Payment':'Progress Payment');}
+function lienBody(d){
+  var amt=fmtMoney(d.amount),through=fmtDate(d.throughDate);
+  var s='';
+  if(d.stage==='final'){
+    s+='For good and valuable consideration, the receipt of which is acknowledged below as stated, the undersigned lien claimant waives and releases any and all lien rights, claims, and rights of action against the owner, the property, and any payment bond for labor, services, materials, and equipment furnished for the project identified above, through and including the date of final payment.';
+  }else{
+    s+='For good and valuable consideration, the undersigned lien claimant waives and releases any and all lien rights and claims against the owner, the property, and any payment bond for labor, services, materials, and equipment furnished to the project identified above through '+through+'.';
+  }
+  if(d.form==='conditional'){
+    s+=' THIS WAIVER IS CONDITIONAL: it becomes effective only when the undersigned has actually received, and the payment has cleared, in the amount of '+amt+'. Until then, all lien rights are fully preserved.';
+  }else{
+    s+=' The undersigned acknowledges receipt of payment in the amount of '+amt+' and this waiver is UNCONDITIONAL and effective upon signing, whether or not further payment is received.';
+  }
+  if(d.stage==='final'){
+    s+=' This is a FINAL waiver: it covers all work furnished to the project, including change orders and extras, except any items listed under Exceptions below.';
+  }else{
+    s+=' This waiver covers work furnished through the through-date above only. It does not waive rights for work furnished after that date, for retainage, or for items listed under Exceptions below.';
+  }
+  return s;
+}
+</script>
+<script>
+/* ================= form building helpers ================= */
+function F(label,inner,cls){return '<div class="frow'+(cls?' '+cls:'')+'"><label>'+esc(label)+'</label>'+inner+'</div>';}
+function IN(k,val,attrs){return '<input type="text" data-k="'+k+'" value="'+esc(val==null?'':val)+'" '+(attrs||'')+'>';}
+function DT(k,val){return '<input type="date" data-k="'+k+'" value="'+esc(val||'')+'">';}
+function TA(k,val,cls){return '<textarea data-k="'+k+'" class="'+(cls||'')+'">'+esc(val||'')+'</textarea>';}
+function SEL(k,val,opts){var s='<select data-k="'+k+'">';opts.forEach(function(o){s+='<option value="'+esc(o)+'"'+(String(val)===String(o)?' selected':'')+'>'+esc(o)+'</option>';});return s+'</select>';}
+function CHK(k,val,text){return '<label class="checkline"><input type="checkbox" data-k="'+k+'"'+(val?' checked':'')+'><span>'+esc(text)+'</span></label>';}
+function rowShell(rep,cells){return '<tr class="rep-row">'+cells+'<td style="width:36px"><button type="button" class="btn ghost small" data-delrow title="Remove row">✕</button></td></tr>';}
+function RK(name,val,attrs){return '<input type="text" data-rk="'+name+'" value="'+esc(val==null?'':val)+'" '+(attrs||'')+'>';}
+function RKSEL(name,val,opts){var s='<select data-rk="'+name+'">';opts.forEach(function(o){s+='<option value="'+esc(o)+'"'+(String(val)===String(o)?' selected':'')+'>'+esc(o)+'</option>';});return s+'</select>';}
+
+function rowHTML(rep,row){
+  row=row||{};
+  if(rep==='allowances')return rowShell(rep,'<td>'+RK('item',row.item,'placeholder="Allowance item (e.g., Tile selection)"')+'</td><td style="width:150px">'+RK('amount',row.amount,'placeholder="$ amount" inputmode="decimal"')+'</td>');
+  if(rep==='schedule')return rowShell(rep,'<td>'+RK('milestone',row.milestone,'placeholder="Milestone (e.g., Due at signing)"')+'</td><td style="width:130px">'+RK('pct',row.pct,'placeholder="% of price" inputmode="decimal"')+'</td>');
+  if(rep==='walkItems')return rowShell(rep,'<td>'+RK('item',row.item,'placeholder="Area / system"')+'</td><td style="width:190px">'+RKSEL('status',row.status||'Accepted',['Accepted','Accepted with note','Not applicable'])+'</td>');
+  if(rep==='deliveries')return rowShell(rep,
+    '<td style="width:140px"><input type="date" data-rk="date" value="'+esc(row.date||'')+'"></td>'+
+    '<td>'+RK('item',row.item,'placeholder="Material / equipment"')+'</td>'+
+    '<td style="width:76px">'+RK('qty',row.qty,'placeholder="Qty" inputmode="decimal"')+'</td>'+
+    '<td style="width:86px">'+RK('unit',row.unit,'placeholder="Unit"')+'</td>'+
+    '<td>'+RK('supplier',row.supplier,'placeholder="Supplier"')+'</td>'+
+    '<td style="width:110px">'+RK('po',row.po,'placeholder="PO / ticket #"')+'</td>'+
+    '<td style="width:120px">'+RK('receivedBy',row.receivedBy,'placeholder="Received by"')+'</td>'+
+    '<td style="width:120px">'+RKSEL('condition',row.condition||'Good',['Good','Damaged','Short','Refused'])+'</td>');
+  return '';
+}
+function repTable(rep,rows,headers,addLabel){
+  var h='<table class="rows"><thead><tr>';headers.forEach(function(x){h+='<th>'+esc(x)+'</th>';});h+='<th></th></tr></thead><tbody data-rep="'+rep+'">';
+  (rows||[]).forEach(function(r){h+=rowHTML(rep,r);});
+  return h+'</tbody></table><div class="btnrow"><button type="button" class="btn ghost small" data-addrow="'+rep+'">＋ '+esc(addLabel)+'</button></div>';
+}
+
+function formHTML(type,d){
+  var h='';
+  if(type==='bid'){
+    h+='<div class="grid">'+F('Job name / title',IN('job',d.job))+F('Date',DT('date',d.date))+'</div>';
+    h+='<div class="grid">'+F('Customer',IN('customer',d.customer))+F('Proposal valid for (days)','<input inputmode="decimal" type="number" data-k="validDays" value="'+esc(d.validDays)+'" min="1">')+'</div>';
+    h+=F('Customer address',IN('customerAddress',d.customerAddress));
+    h+=F('Scope of work — what IS included',TA('scope',d.scope,'tall'));
+    h+=F('Exclusions — what is NOT included',TA('exclusions',d.exclusions));
+    h+='<h3>Allowances</h3><p class="small">Budget amounts for customer selections. Actual selection costs over/under the allowance adjust the price by written change order.</p>';
+    h+=repTable('allowances',d.allowances,['Allowance item','Amount'],'Add allowance');
+    h+=F('Contract price ($)','<input type="text" data-k="contractPrice" value="'+esc(d.contractPrice)+'" inputmode="decimal" placeholder="Total contract price">');
+    h+='<h3>Payment schedule</h3><p class="small">Percentages should add up to 100. Dollar amounts on the sheet are calculated from the contract price.</p>';
+    h+=repTable('schedule',d.schedule,['Milestone','% of price'],'Add milestone');
+    h+=F('Terms & notes',TA('terms',d.terms));
+    h+=F('Prepared by (printed name for signature line)',IN('preparedBy',d.preparedBy));
+  }
+  if(type==='sub'){
+    h+='<div class="grid">'+F('Project / job',IN('job',d.job))+F('Agreement date',DT('date',d.date))+'</div>';
+    h+=F('Project address',IN('jobAddress',d.jobAddress));
+    h+='<div class="grid">'+F('Contractor (defaults to your company)',IN('contractor',d.contractor))+F('Subcontractor legal name',IN('subName',d.subName))+'</div>';
+    h+='<div class="grid">'+F('Subcontractor address',IN('subAddress',d.subAddress))+F('Subcontractor phone',IN('subPhone',d.subPhone))+'</div>';
+    h+='<div class="grid">'+F('Subcontractor license #',IN('subLicense',d.subLicense))+F('Agreement amount ($)', '<input type="text" data-k="amount" value="'+esc(d.amount)+'" inputmode="decimal">')+'</div>';
+    h+=F('Scope of work subcontracted',TA('scope',d.scope,'tall'));
+    h+='<div class="grid">'+F('Start date',DT('startDate',d.startDate))+F('Completion date',DT('completionDate',d.completionDate))+'</div>';
+    h+=F('Payment terms',TA('payTerms',d.payTerms));
+    h+='<h3>Insurance representations (carrier — policy # — expires)</h3>';
+    h+='<div class="grid3">'+F('General liability',IN('insGL',d.insGL))+F('Workers\u2019 compensation',IN('insWC',d.insWC))+F('Auto',IN('insAuto',d.insAuto))+'</div>';
+    h+=F('Agreement clauses (editable — have your attorney review)',TA('agreementText',d.agreementText,'tall'));
+    h+='<div class="grid">'+F('Contractor signer (printed name)',IN('contractorSig',d.contractorSig))+F('Subcontractor signer (printed name)',IN('subSig',d.subSig))+'</div>';
+  }
+  if(type==='warranty'){
+    h+='<div class="grid">'+F('Customer',IN('customer',d.customer))+F('Letter date',DT('date',d.date))+'</div>';
+    h+='<div class="grid">'+F('Project / job',IN('job',d.job))+F('Project address',IN('jobAddress',d.jobAddress))+'</div>';
+    h+='<div class="grid">'+F('Work completed on',DT('completionDate',d.completionDate))+F('Warranty length (years)','<input inputmode="decimal" type="number" data-k="years" value="'+esc(d.years)+'" min="0" step="0.5">')+'</div>';
+    h+=F('What is covered',TA('covered',d.covered,'tall'));
+    h+=F('What is NOT covered (exclusions)',TA('exclusions',d.exclusions,'tall'));
+    h+=F('How to make a claim',TA('claimProcess',d.claimProcess));
+    h+=F('Signed for the company by (printed name)',IN('sig',d.sig));
+  }
+  if(type==='walk'){
+    h+='<div class="grid">'+F('Customer',IN('customer',d.customer))+F('Walkthrough date',DT('date',d.date))+'</div>';
+    h+='<div class="grid">'+F('Project / job',IN('job',d.job))+F('Project address',IN('jobAddress',d.jobAddress))+'</div>';
+    h+='<h3>Areas inspected</h3>';
+    h+=repTable('walkItems',d.items,['Area / system','Status'],'Add area');
+    h+=F('Acceptance statement (editable)',TA('statement',d.statement,'tall'));
+    h+=F('Items noted at walkthrough (follow-up under warranty — not a punch list)',TA('notes',d.notes));
+    h+='<div class="grid">'+F('Customer signer (printed name)',IN('customerSig',d.customerSig))+F('Contractor signer (printed name)',IN('contractorSig',d.contractorSig))+'</div>';
+  }
+  if(type==='lien'){
+    h+='<div class="grid">'+F('Waiver type',SEL('form',d.form,['conditional','unconditional']))+F('Payment stage',SEL('stage',d.stage,['progress','final']))+'</div>';
+    h+='<p class="small">Form choices: <b>conditional</b> = effective only when the payment actually clears (safest before you\u2019re paid). <b>unconditional</b> = effective the moment it\u2019s signed (only sign after payment has cleared). <b>progress</b> = covers work through the through-date. <b>final</b> = covers the whole job.</p>';
+    h+='<div class="grid">'+F('Claimant (waiving party — usually your company)',IN('claimant',d.claimant))+F('Payment amount ($)', '<input type="text" data-k="amount" value="'+esc(d.amount)+'" inputmode="decimal">')+'</div>';
+    h+='<div class="grid">'+F('Property owner',IN('owner',d.owner))+F('Customer / party who hired claimant',IN('customer',d.customer))+'</div>';
+    h+='<div class="grid">'+F('Project',IN('project',d.project))+F('Work furnished through (date)',DT('throughDate',d.throughDate))+'</div>';
+    h+=F('Project address',IN('projectAddress',d.projectAddress));
+    h+=F('Exceptions — rights NOT waived (retainage, pending change orders, disputed items…). Leave blank if none',TA('exceptions',d.exceptions));
+    h+='<div class="grid">'+F('Signer (printed name)',IN('sig',d.sig))+F('Signer title',IN('title',d.title))+'</div>';
+  }
+  if(type==='incident'){
+    h+='<div class="grid3">'+F('Report type',SEL('rtype',d.rtype,['Injury','Near miss','Property damage','Vehicle / equipment']))+F('Date',DT('date',d.date))+F('Time', '<input type="time" data-k="time" value="'+esc(d.time||'')+'">')+'</div>';
+    h+='<div class="grid">'+F('Project / job',IN('job',d.job))+F('Location on site',IN('location',d.location))+'</div>';
+    h+=F('People involved (names, roles)',TA('persons',d.persons));
+    h+=F('Witnesses',TA('witnesses',d.witnesses));
+    h+=F('What happened (facts only)',TA('description',d.description,'tall'));
+    h+=F('Immediate actions taken (first aid, area secured, notifications)',TA('actions',d.actions));
+    h+=F('Root cause (if known)',TA('rootCause',d.rootCause));
+    h+=F('Corrective actions & who owns them',TA('corrective',d.corrective));
+    h+='<div class="grid">'+F('Reported by',IN('reportedBy',d.reportedBy))+F('Supervisor sign-off (printed name)',IN('supervisor',d.supervisor))+'</div>';
+  }
+  if(type==='delivery'){
+    h+='<div class="grid">'+F('Project / job',IN('job',d.job))+F('Project address',IN('jobAddress',d.jobAddress))+'</div>';
+    h+='<h3>Deliveries received</h3><p class="small">One row per delivery. Mark condition honestly — a “Damaged” or “Short” note on the day it arrives is what wins the argument with the supplier later.</p>';
+    h+=repTable('deliveries',d.entries,['Date','Item','Qty','Unit','Supplier','PO / ticket','Received by','Condition'],'Add delivery');
+  }
+  if(type==='release'){
+    h+='<div class="grid">'+F('Client name',IN('client',d.client))+F('Date',DT('date',d.date))+'</div>';
+    h+=F('Project / job',IN('job',d.job));
+    h+=F('Testimonial (in the client\u2019s own words — or leave blank for them to write on the printed sheet)',TA('testimonial',d.testimonial,'tall'));
+    h+='<h3>Permissions granted</h3>';
+    h+=CHK('useWords',d.useWords,'Use my testimonial (my words) in marketing');
+    h+=CHK('useName',d.useName,'Use my name alongside the testimonial');
+    h+=CHK('usePhotos',d.usePhotos,'Photograph the project and use the photos');
+    h+=CHK('useWebsite',d.useWebsite,'Use on the company website');
+    h+=CHK('useSocial',d.useSocial,'Use on social media');
+    h+=CHK('usePrint',d.usePrint,'Use in printed materials (flyers, door hangers, ads)');
+    h+=F('Client signer (printed name)',IN('sig',d.sig));
+  }
+  return h;
+}
+
+function collectForm(){
+  var root=$('docForm');var d={};
+  root.querySelectorAll('[data-k]').forEach(function(el){
+    if(el.closest('[data-rep]'))return;
+    d[el.getAttribute('data-k')]=(el.type==='checkbox')?el.checked:el.value;
+  });
+  root.querySelectorAll('tbody[data-rep]').forEach(function(rep){
+    var key=rep.getAttribute('data-rep');var rows=[];
+    rep.querySelectorAll('.rep-row').forEach(function(r){
+      var o={};r.querySelectorAll('[data-rk]').forEach(function(el){o[el.getAttribute('data-rk')]=el.value;});
+      rows.push(o);
+    });
+    if(key==='walkItems')d.items=rows;else if(key==='deliveries')d.entries=rows;else d[key]=rows;
+  });
+  return d;
+}
+</script>
+<script>
+/* ================= printable sheets ================= */
+function sheetHead(title){
+  var s=state.settings;
+  var bits=[];if(s.address)bits.push(esc(s.address));if(s.phone)bits.push(esc(s.phone));if(s.email)bits.push(esc(s.email));
+  if(s.license)bits.push('Lic. '+esc(s.license));if(s.website)bits.push(esc(s.website));
+  var h='<div class="sheet"><div class="co"><div class="name">'+esc(s.company||'Your Company Name')+'</div>';
+  if(s.tagline)h+='<div class="sub">'+esc(s.tagline)+'</div>';
+  if(bits.length)h+='<div class="sub">'+bits.join(' · ')+'</div>';
+  return h+'</div><h1 class="doc">'+esc(title)+'</h1>';
+}
+function sheetFoot(extra){
+  return '<div class="foot">'+(extra||'')+'Generated with FieldForms Template Library Vol. 1. Retain a signed copy with the project file.</div></div>';
+}
+function kv(k,v){return v?'<p class="kv"><b>'+esc(k)+'</b>'+esc(v)+'</p>':'';}
+function kvRaw(k,html){return html?'<p class="kv"><b>'+esc(k)+'</b>'+html+'</p>':'';}
+function sigBlock(name,cap,dateVal){
+  return '<div class="sig"><div class="sigline">'+esc(name||'')+'</div><div class="sigcap">'+esc(cap)+'</div>'
+    +'<div class="sigline" style="margin-top:14px;font-family:inherit;font-size:13px">'+esc(dateVal?fmtDate(dateVal):'')+'</div><div class="sigcap">Date</div></div>';
+}
+function para(text){return lines(text).map(function(l){return '<p>'+esc(l)+'</p>';}).join('');}
+function bullets(text){var ls=lines(text);if(!ls.length)return '';return '<ul>'+ls.map(function(l){return '<li>'+esc(l)+'</li>';}).join('')+'</ul>';}
+
+function sheetBid(doc){
+  var d=doc.data,t=bidTotals(d),h=sheetHead('Proposal');
+  h+=kv('Prepared for',d.customer)+kv('Customer address',d.customerAddress)+kv('Project',d.job)+kvRaw('Date',esc(fmtDate(d.date)));
+  h+='<h4>Scope of Work</h4>'+(bullets(d.scope)||'<p>—</p>');
+  if(lines(d.exclusions).length){h+='<h4>Exclusions — Not Included</h4>'+bullets(d.exclusions);}
+  if((d.allowances||[]).length){
+    h+='<h4>Allowances</h4><table class="data"><tr><th>Item</th><th style="width:150px">Allowance</th></tr>';
+    d.allowances.forEach(function(a){h+='<tr><td>'+esc(a.item)+'</td><td>'+fmtMoney(a.amount)+'</td></tr>';});
+    h+='<tr><td style="text-align:right"><b>Total allowances (included in contract price)</b></td><td><b>'+fmtMoney(t.allowTotal)+'</b></td></tr></table>';
+  }
+  h+='<h4>Price</h4><p class="total">Contract price: '+fmtMoney(t.price)+'</p>';
+  if((d.schedule||[]).length){
+    h+='<h4>Payment Schedule</h4><table class="data"><tr><th>Milestone</th><th style="width:90px">%</th><th style="width:150px">Amount</th></tr>';
+    t.schedule.forEach(function(s){h+='<tr><td>'+esc(s.milestone)+'</td><td>'+esc(s.pct)+'%</td><td>'+fmtMoney(s.amount)+'</td></tr>';});
+    h+='</table>';
+  }
+  if(lines(d.terms).length){h+='<h4>Terms</h4>'+para(d.terms);}
+  h+='<p><b>Validity:</b> This proposal is valid for '+esc(num(d.validDays)||30)+' days from the date above.</p>';
+  h+='<h4>Acceptance</h4><p>By signing below, the customer accepts this proposal and authorizes the work to proceed under the terms above.</p>';
+  h+='<div class="siggrid">'+sigBlock(d.customer,'Customer signature — '+ (d.customer||''),null)+sigBlock(d.preparedBy,'Contractor signature',d.date)+'</div>';
+  return h+sheetFoot();
+}
+function sheetSub(doc){
+  var d=doc.data,h=sheetHead('Subcontractor Agreement — Short Form');
+  h+='<div class="disc"><b>'+esc(LEGAL_NOTICE)+'</b></div>';
+  h+=kv('Project',d.job)+kv('Project address',d.jobAddress)+kvRaw('Agreement date',esc(fmtDate(d.date)));
+  h+=kv('Contractor',d.contractor)+kv('Subcontractor',d.subName)+kv('Subcontractor address',d.subAddress)+kv('Subcontractor phone',d.subPhone)+kv('Subcontractor license #',d.subLicense);
+  h+='<h4>Scope of Work</h4>'+(para(d.scope)||'<p>—</p>');
+  h+='<h4>Compensation</h4><p class="total">Agreement amount: '+fmtMoney(d.amount)+'</p>'+para(d.payTerms);
+  h+='<h4>Schedule</h4>'+kvRaw('Start date',esc(fmtDate(d.startDate)))+kvRaw('Completion date',esc(fmtDate(d.completionDate)));
+  h+='<h4>Insurance & License Representations</h4>';
+  h+='<p>Subcontractor represents that the following are current and will be maintained through completion:</p><ul>'
+    +'<li>General liability: '+esc(d.insGL||'—')+'</li><li>Workers\u2019 compensation: '+esc(d.insWC||'—')+'</li><li>Auto: '+esc(d.insAuto||'—')+'</li>'
+    +'<li>License #: '+esc(d.subLicense||'—')+'</li></ul>';
+  h+='<h4>Terms</h4>'+para(d.agreementText);
+  h+='<div class="siggrid">'+sigBlock(d.contractorSig||d.contractor,'Contractor signature',d.date)+sigBlock(d.subSig,'Subcontractor signature',d.date)+'</div>';
+  return h+sheetFoot();
+}
+function sheetWarranty(doc){
+  var d=doc.data,h=sheetHead('Workmanship Warranty');
+  h+='<p>'+esc(fmtDate(d.date))+'</p>';
+  h+='<p>Dear '+esc(d.customer||'Customer')+',</p>';
+  h+='<p>Thank you for choosing '+(esc(state.settings.company||'us'))+'. This letter sets out the workmanship warranty covering the project below.</p>';
+  h+=kv('Project',d.job)+kv('Project address',d.jobAddress)+kvRaw('Work completed on',esc(fmtDate(d.completionDate)));
+  h+='<p><b>Warranty period:</b> '+esc(d.years)+' year'+(num(d.years)===1?'':'s')+' from the completion date — through <b>'+esc(fmtDate(warrantyEndDate(d)))+'</b>.</p>';
+  h+='<h4>What Is Covered</h4>'+para(d.covered);
+  h+='<h4>What Is Not Covered</h4>'+para(d.exclusions);
+  h+='<h4>How to Make a Claim</h4>'+para(d.claimProcess);
+  h+='<p>This warranty is provided in addition to any rights you may have under applicable law and any manufacturer warranties on materials and equipment, which are passed through to you.</p>';
+  h+='<div class="siggrid"><div class="sig"><div class="sigline">'+esc(d.sig||'')+'</div><div class="sigcap">Authorized signature — '+esc(state.settings.company||'Company')+'</div><div class="sigline" style="margin-top:14px;font-family:inherit;font-size:13px">'+esc(fmtDate(d.date))+'</div><div class="sigcap">Date</div></div><div></div></div>';
+  return h+sheetFoot();
+}
+function sheetWalk(doc){
+  var d=doc.data,h=sheetHead('Final Walkthrough & Acceptance Certificate');
+  h+=kv('Customer',d.customer)+kv('Project',d.job)+kv('Project address',d.jobAddress)+kvRaw('Walkthrough date',esc(fmtDate(d.date)));
+  h+='<h4>Areas Inspected</h4><table class="data"><tr><th>Area / system</th><th style="width:190px">Status</th></tr>';
+  (d.items||[]).forEach(function(it){h+='<tr><td>'+esc(it.item)+'</td><td>'+esc(it.status)+'</td></tr>';});
+  h+='</table><h4>Acceptance</h4>'+para(d.statement);
+  if(lines(d.notes).length){h+='<h4>Items Noted at Walkthrough</h4><p class="small" style="font-size:12.5px">Recorded for follow-up under warranty. Noting an item here does not by itself delay final acceptance or final payment except as agreed in writing.</p>'+para(d.notes);}
+  h+='<div class="siggrid">'+sigBlock(d.customerSig,'Customer signature — acceptance',d.date)+sigBlock(d.contractorSig,'Contractor signature',d.date)+'</div>';
+  return h+sheetFoot();
+}
+function sheetLien(doc){
+  var d=doc.data,h=sheetHead(lienKindLabel(d.form,d.stage));
+  h+='<div class="disc"><b>'+esc(LIEN_CAUTION)+'</b></div>';
+  h+=kv('Claimant (waiving party)',d.claimant)+kv('Property owner',d.owner)+kv('Customer / hiring party',d.customer)+kv('Project',d.project)+kv('Project address',d.projectAddress)+kvRaw('Work furnished through',esc(fmtDate(d.throughDate)))+kvRaw('Payment amount',esc(fmtMoney(d.amount)));
+  h+='<h4>Waiver</h4><p>'+esc(lienBody(d))+'</p>';
+  h+='<h4>Exceptions</h4><p>'+esc(lines(d.exceptions).length?d.exceptions:'None — no rights are reserved except as stated above.')+'</p>';
+  h+='<div class="siggrid"><div class="sig"><div class="sigline">'+esc(d.sig||'')+'</div><div class="sigcap">Claimant signature</div>'
+    +'<div style="margin-top:12px;font-size:13px">Printed name: '+esc(d.sig||'')+(d.title?' · Title: '+esc(d.title):'')+'</div>'
+    +'<div class="sigline" style="margin-top:14px;font-family:inherit;font-size:13px"></div><div class="sigcap">Date signed</div></div><div></div></div>';
+  h+='<h4>Notary (if required by your state or the paying party)</h4><p>State of ____________ · County of ____________</p><p>Subscribed and sworn before me on ____________ by ____________________________.</p><div class="sig" style="max-width:300px"><div class="sigline"></div><div class="sigcap">Notary public signature &amp; seal</div></div>';
+  return h+sheetFoot();
+}
+function sheetIncident(doc){
+  var d=doc.data,h=sheetHead('Incident / Near-Miss Report');
+  h+=kv('Report type',d.rtype)+kv('Project / job',d.job)+kv('Location on site',d.location)+kvRaw('Date',esc(fmtDate(d.date)))+kv('Time',d.time);
+  h+='<h4>People Involved</h4>'+(para(d.persons)||'<p>—</p>');
+  if(lines(d.witnesses).length){h+='<h4>Witnesses</h4>'+para(d.witnesses);}
+  h+='<h4>What Happened</h4>'+(para(d.description)||'<p>—</p>');
+  h+='<h4>Immediate Actions Taken</h4>'+(para(d.actions)||'<p>—</p>');
+  if(lines(d.rootCause).length){h+='<h4>Root Cause</h4>'+para(d.rootCause);}
+  if(lines(d.corrective).length){h+='<h4>Corrective Actions</h4>'+para(d.corrective);}
+  h+=kv('Reported by',d.reportedBy);
+  h+='<div class="siggrid"><div class="sig"><div class="sigline">'+esc(d.supervisor||'')+'</div><div class="sigcap">Supervisor sign-off</div></div><div></div></div>';
+  return h+sheetFoot('Internal safety record. ');
+}
+function sheetDelivery(doc){
+  var d=doc.data,s=deliverySummary(d),h=sheetHead('Delivery Receipt Log');
+  h+=kv('Project',d.job)+kv('Project address',d.jobAddress);
+  h+='<table class="data"><tr><th>Date</th><th>Item</th><th>Qty</th><th>Supplier</th><th>PO / ticket</th><th>Received by</th><th>Condition</th></tr>';
+  (d.entries||[]).forEach(function(e){h+='<tr><td>'+esc(fmtDate(e.date))+'</td><td>'+esc(e.item)+'</td><td>'+esc(e.qty)+(e.unit?' '+esc(e.unit):'')+'</td><td>'+esc(e.supplier)+'</td><td>'+esc(e.po)+'</td><td>'+esc(e.receivedBy)+'</td><td>'+esc(e.condition)+'</td></tr>';});
+  h+='</table><p><b>Summary:</b> '+s.count+' deliver'+(s.count===1?'y':'ies')+' logged · '+s.damaged+' damaged · '+s.short+' short · '+s.refused+' refused.</p>';
+  h+='<p class="small" style="font-size:12.5px">Condition notes recorded on the day of delivery support damage/shortage claims with the supplier. Photograph damaged items on arrival and note the photo file name in the item description.</p>';
+  return h+sheetFoot();
+}
+function sheetRelease(doc){
+  var d=doc.data,h=sheetHead('Testimonial & Photo Release');
+  h+=kv('Client',d.client)+kv('Project',d.job)+kvRaw('Date',esc(fmtDate(d.date)));
+  h+='<h4>Testimonial</h4>';
+  if(lines(d.testimonial).length){h+='<p style="font-style:italic">“'+esc(d.testimonial)+'”</p>';}
+  else{h+='<div class="lines"><div></div><div></div><div></div><div></div></div><p class="small" style="font-size:12.5px">Write your testimonial above, in your own words.</p>';}
+  h+='<h4>Permission</h4><p>I give '+(esc(state.settings.company||'the company'))+' permission to use the following, for marketing purposes, without payment:</p><ul>';
+  function perm(on,label){return '<li>'+(on?'☑':'☐')+' '+esc(label)+'</li>';}
+  h+=perm(d.useWords,'My testimonial (my words)')+perm(d.useName,'My name alongside the testimonial')+perm(d.usePhotos,'Photographs of the project')+perm(d.useWebsite,'On the company website')+perm(d.useSocial,'On social media')+perm(d.usePrint,'In printed materials');
+  h+='</ul><p>I understand I may withdraw this permission at any time in writing, and that withdrawal applies to future uses.</p>';
+  h+='<div class="siggrid"><div class="sig"><div class="sigline">'+esc(d.sig||d.client||'')+'</div><div class="sigcap">Client signature</div><div class="sigline" style="margin-top:14px;font-family:inherit;font-size:13px">'+esc(fmtDate(d.date))+'</div><div class="sigcap">Date</div></div><div></div></div>';
+  return h+sheetFoot();
+}
+function sheetHTML(doc){
+  switch(doc.type){
+    case 'bid':return sheetBid(doc);
+    case 'sub':return sheetSub(doc);
+    case 'warranty':return sheetWarranty(doc);
+    case 'walk':return sheetWalk(doc);
+    case 'lien':return sheetLien(doc);
+    case 'incident':return sheetIncident(doc);
+    case 'delivery':return sheetDelivery(doc);
+    case 'release':return sheetRelease(doc);
+  }
+  return '<div class="sheet"><p>Unknown document type.</p></div>';
+}
+</script>
+<script>
+/* ================= library & editor flow ================= */
+var currentType=null, editingId=null;
+function docJob(d){return d.job||d.project||'';}
+function docCustomer(d){return d.customer||d.client||d.subName||d.claimant||'';}
+function docTitle(doc){var t=TYPES[doc.type]?TYPES[doc.type].label:doc.type;var j=docJob(doc.data);return t+(j?' — '+j:'');}
+function addDoc(type,data,demo){
+  var doc={id:uid(),type:type,data:data,demo:!!demo,created:Date.now(),updated:Date.now()};
+  state.docs.unshift(doc);return doc;
+}
+function findDoc(id){for(var i=0;i<state.docs.length;i++)if(state.docs[i].id===id)return state.docs[i];return null;}
+function deleteDoc(id){state.docs=state.docs.filter(function(x){return x.id!==id;});saveState();renderLibrary();}
+function clearDemo(){var before=state.docs.length;state.docs=state.docs.filter(function(x){return !x.demo;});saveState();renderLibrary();return before-state.docs.length;}
+
+function renderLibrary(){
+  var q=($('searchBox').value||'').toLowerCase();
+  var list=state.docs.filter(function(doc){
+    if(!q)return true;
+    var hay=(TYPES[doc.type].label+' '+JSON.stringify(doc.data)).toLowerCase();
+    return hay.indexOf(q)>=0;
+  });
+  var h='';
+  list.forEach(function(doc){
+    h+='<div class="docrow"><div class="meta"><div class="tt">'+esc(TYPES[doc.type].icon)+' '+esc(docTitle(doc))+(doc.demo?'<span class="tag demo">SAMPLE</span>':'')+'</div>'
+      +'<div class="ss">'+esc(docCustomer(doc.data)||'—')+' · '+esc(fmtDate(doc.data.date||''))+'</div></div>'
+      +'<button class="btn secondary small" data-act="open" data-id="'+doc.id+'">Open</button>'
+      +'<button class="btn ghost small" data-act="print" data-id="'+doc.id+'">🖨 Print</button>'
+      +'<button class="btn ghost small" data-act="dup" data-id="'+doc.id+'">Duplicate</button>'
+      +'<button class="btn ghost small" data-act="del" data-id="'+doc.id+'">Delete</button></div>';
+  });
+  $('docList').innerHTML=h||'<p class="small">No documents match your search.</p>';
+  $('libEmpty').classList.toggle('hidden',state.docs.length>0);
+}
+function showTab(name){
+  ['library','editor','settings','help'].forEach(function(t){
+    $('view-'+t).classList.toggle('hidden',t!==name);
+  });
+  document.querySelectorAll('nav.tabs button').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-tab')===name);});
+  if(name==='library')renderLibrary();
+}
+function renderTypePicker(){
+  var h='';
+  Object.keys(TYPES).forEach(function(k){
+    h+='<button type="button" class="typecard" data-type="'+k+'"><div class="t">'+esc(TYPES[k].icon)+' '+esc(TYPES[k].label)+'</div><div class="d">'+esc(TYPES[k].blurb)+'</div></button>';
+  });
+  $('typeGrid').innerHTML=h;
+}
+function openEditor(type,doc){
+  currentType=type;editingId=doc?doc.id:null;
+  var data=doc?JSON.parse(JSON.stringify(doc.data)):defaultData(type);
+  $('typePickerCard').classList.add('hidden');
+  $('editorCard').classList.remove('hidden');
+  $('editorTitle').textContent=TYPES[type].icon+' '+TYPES[type].label+(doc?' — editing':' — new');
+  $('legalBanner').innerHTML=TYPES[type].legal?'<div class="notice red"><b>Legal template.</b> '+esc(LEGAL_NOTICE)+'</div>':'';
+  $('docForm').innerHTML=formHTML(type,data);
+  $('sheetPreview').innerHTML='';
+  $('editorStatus').textContent='';
+  showTab('editor');
+}
+function currentFormDoc(){
+  if(!currentType)return null;
+  return {id:editingId||'preview',type:currentType,data:collectForm(),demo:false};
+}
+function saveCurrentDoc(){
+  var doc=currentFormDoc();if(!doc)return null;
+  var saved;
+  if(editingId&&findDoc(editingId)){saved=findDoc(editingId);saved.data=doc.data;saved.updated=Date.now();}
+  else{saved=addDoc(doc.type,doc.data,false);editingId=saved.id;}
+  saveState();renderLibrary();
+  return saved;
+}
+function previewCurrent(){
+  var doc=currentFormDoc();if(!doc)return;
+  $('sheetPreview').innerHTML=sheetHTML(doc);
+  if(doc.type==='bid'){var t=bidTotals(doc.data);if(Math.abs(t.pctTotal-100)>0.001)$('editorStatus').innerHTML='<span class="warn">Note: payment schedule percentages add up to '+esc(t.pctTotal)+'%, not 100% — the dollar amounts on the sheet are still calculated from the contract price.</span>';else $('editorStatus').textContent='';}
+}
+function renderPrintArea(doc){$('printArea').innerHTML=sheetHTML(doc);}
+function printDoc(doc){renderPrintArea(doc);try{window.print();}catch(e){}}
+
+/* ================= backup ================= */
+function exportText(){return JSON.stringify({app:'fieldforms-template-library',version:1,exported:new Date().toISOString(),settings:state.settings,docs:state.docs,legal:state.legal||null},null,2);}
+function importFromText(text){
+  var obj;
+  try{obj=JSON.parse(text);}catch(e){return {ok:false,error:'That file is not valid JSON. Nothing was imported.'};}
+  if(!obj||typeof obj!=='object'||!Array.isArray(obj.docs))return {ok:false,error:'That file does not look like a Template Library backup. Nothing was imported.'};
+  for(var i=0;i<obj.docs.length;i++){var d=obj.docs[i];if(!d||!TYPES[d.type]||typeof d.data!=='object'||!d.data)return {ok:false,error:'A document in that backup is damaged or from a different app. Nothing was imported.'};}
+  state.settings=Object.assign(defaultSettings(),obj.settings||{});
+  state.docs=obj.docs.map(function(d){return {id:d.id||uid(),type:d.type,data:d.data,demo:!!d.demo,created:d.created||Date.now(),updated:d.updated||Date.now()};});
+  state.legal=(obj.legal&&typeof obj.legal==='object')?obj.legal:null;
+  state.seeded=true;
+  saveState();renderSettings();renderLibrary();
+  return {ok:true,count:state.docs.length};
+}
+
+/* ================= demo data ================= */
+function demoDocs(){
+  var bid=defaultData('bid');
+  bid.job='Maple Street Kitchen Remodel';bid.customer='Jordan & Casey Miller';bid.customerAddress='418 Maple St';bid.date=todayISO();bid.validDays=30;
+  bid.scope='Remove existing cabinets, countertops, and flooring in kitchen\nInstall new shaker cabinets (painted, soft-close) per approved layout\nInstall quartz countertops with undermount sink\nInstall LVP flooring, approx. 240 sq ft\nReconnect existing appliances; new faucet and disposal';
+  bid.exclusions='Appliance purchase (owner-supplied)\nElectrical panel upgrades\nStructural repairs to subfloor if concealed damage is found';
+  bid.allowances=[{item:'Tile backsplash selection',amount:'1200'},{item:'Cabinet hardware',amount:'350'},{item:'Light fixtures (3)',amount:'500'}];
+  bid.contractPrice='12500';
+  bid.schedule=[{milestone:'Due at signing',pct:40},{milestone:'Due when cabinets are set',pct:40},{milestone:'Due at substantial completion',pct:20}];
+  bid.preparedBy='Alex Morgan';
+  var war=defaultData('warranty');
+  war.job='Maple Street Kitchen Remodel';war.jobAddress='418 Maple St';war.customer='Jordan & Casey Miller';war.date=todayISO();war.completionDate=todayISO();war.years=2;
+  return [{type:'bid',data:bid},{type:'warranty',data:war}];
+}
+function seedDemo(){
+  if(state.seeded)return;
+  if(state.docs.length===0){demoDocs().forEach(function(d){addDoc(d.type,d.data,true);});}
+  state.seeded=true;saveState();
+}
+
+/* ================= settings ================= */
+function renderSettings(){
+  var s=state.settings;
+  $('s_company').value=s.company||'';$('s_tagline').value=s.tagline||'';$('s_phone').value=s.phone||'';
+  $('s_email').value=s.email||'';$('s_license').value=s.license||'';$('s_website').value=s.website||'';$('s_address').value=s.address||'';
+}
+function saveSettingsFromForm(){
+  state.settings={company:$('s_company').value,tagline:$('s_tagline').value,phone:$('s_phone').value,email:$('s_email').value,license:$('s_license').value,website:$('s_website').value,address:$('s_address').value};
+  saveState();
+}
+function doEraseAll(){state=defaultState();state.seeded=true;saveState();renderSettings();renderLibrary();}
+
+/* ================= init & events ================= */
+function init(){
+  loadState();seedDemo();renderSettings();renderTypePicker();renderLibrary();
+  document.querySelectorAll('nav.tabs button').forEach(function(b){b.addEventListener('click',function(){showTab(b.getAttribute('data-tab'));});});
+  $('searchBox').addEventListener('input',renderLibrary);
+  $('typeGrid').addEventListener('click',function(e){var c=e.target.closest('[data-type]');if(c)openEditor(c.getAttribute('data-type'),null);});
+  $('docForm').addEventListener('click',function(e){
+    var add=e.target.closest('[data-addrow]');
+    if(add){var rep=add.getAttribute('data-addrow');var tb=$('docForm').querySelector('[data-rep="'+rep+'"]');if(tb)tb.insertAdjacentHTML('beforeend',rowHTML(rep,rep==='deliveries'?{date:todayISO(),condition:'Good'}:rep==='walkItems'?{status:'Accepted'}:{}));return;}
+    var del=e.target.closest('[data-delrow]');
+    if(del){var row=del.closest('.rep-row');if(row)row.remove();}
+  });
+  $('docList').addEventListener('click',function(e){
+    var b=e.target.closest('[data-act]');if(!b)return;
+    var doc=findDoc(b.getAttribute('data-id'));if(!doc)return;
+    var act=b.getAttribute('data-act');
+    if(act==='open')openEditor(doc.type,doc);
+    if(act==='print')printDoc(doc);
+    if(act==='dup'){var c=addDoc(doc.type,JSON.parse(JSON.stringify(doc.data)),false);saveState();renderLibrary();$('libStatus').innerHTML='<span class="ok">Duplicated as a new document.</span>';}
+    if(act==='del'){deleteDoc(doc.id);$('libStatus').textContent='Document deleted.';}
+  });
+  $('btnSaveDoc').addEventListener('click',function(){var d=saveCurrentDoc();if(d)$('editorStatus').innerHTML='<span class="ok">Saved to your library.</span>';});
+  $('btnPreview').addEventListener('click',previewCurrent);
+  $('btnPrintDoc').addEventListener('click',function(){var doc=currentFormDoc();if(doc)printDoc(doc);});
+  $('btnBackToTypes').addEventListener('click',function(){$('editorCard').classList.add('hidden');$('typePickerCard').classList.remove('hidden');currentType=null;editingId=null;});
+  $('btnClearDemo').addEventListener('click',function(){var n=clearDemo();$('libStatus').textContent=n?('Removed '+n+' sample document'+(n===1?'':'s')+'.'):'No sample documents to remove.';});
+  $('btnExport').addEventListener('click',function(){
+    var blob=new Blob([exportText()],{type:'application/json'});
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='fieldforms-template-library-backup.json';document.body.appendChild(a);a.click();a.remove();
+    $('libStatus').innerHTML='<span class="ok">Backup downloaded.</span>';
+  });
+  $('btnImport').addEventListener('click',function(){$('importFile').click();});
+  $('importFile').addEventListener('change',function(){
+    var f=$('importFile').files&&$('importFile').files[0];if(!f)return;
+    var r=new FileReader();
+    r.onload=function(){var res=importFromText(String(r.result||''));$('libStatus').innerHTML=res.ok?'<span class="ok">Backup imported — '+res.count+' document(s).</span>':'<span class="bad">'+esc(res.error)+'</span>';};
+    r.onerror=function(){$('libStatus').innerHTML='<span class="bad">Could not read that file. Nothing was imported.</span>';};
+    r.readAsText(f);$('importFile').value='';
+  });
+  $('btnSaveSettings').addEventListener('click',function(){saveSettingsFromForm();$('setStatus').innerHTML='<span class="ok">Company profile saved.</span>';});
+  $('btnEraseAll').addEventListener('click',function(){var ok=false;try{ok=window.confirm('Erase ALL documents and settings from this browser? This cannot be undone. Export a backup first if you might need them.');}catch(e){}if(ok){doEraseAll();$('dataStatus').textContent='All data erased.';}});
+}
+document.addEventListener('DOMContentLoaded',init);
+
+/* hooks for automated QA */
+window.FFL={get state(){return state;},saveState:saveState,loadState:loadState,addDoc:addDoc,findDoc:findDoc,deleteDoc:deleteDoc,clearDemo:clearDemo,
+  sheetHTML:sheetHTML,bidTotals:bidTotals,deliverySummary:deliverySummary,warrantyEndDate:warrantyEndDate,lienBody:lienBody,lienKindLabel:lienKindLabel,
+  importFromText:importFromText,exportText:exportText,defaultData:defaultData,formHTML:formHTML,collectForm:collectForm,openEditor:openEditor,
+  renderLibrary:renderLibrary,renderPrintArea:renderPrintArea,doEraseAll:doEraseAll,addYearsClamped:addYearsClamped,fmtMoney:fmtMoney,fmtDate:fmtDate,TYPES:TYPES,KEY:KEY};
+</script>
+
+<style id="ww-legal-css">
+.ww-legal-overlay{position:fixed;inset:0;z-index:99990;background:rgba(10,12,14,.72);display:flex;align-items:center;justify-content:center;padding:14px;box-sizing:border-box}
+.ww-legal-card{background:#fff;color:#17202a;border-radius:14px;max-width:560px;width:100%;max-height:92vh;overflow:auto;padding:22px 20px;box-sizing:border-box;box-shadow:0 18px 50px rgba(0,0,0,.35);font-family:inherit}
+.ww-legal-card h2{margin:0 0 4px;font-size:22px}
+.ww-legal-card h3{margin:16px 0 6px}
+.ww-legal-sum{font-size:16px;line-height:1.45;margin:12px 0}
+.ww-legal-sum p{margin:6px 0;font-weight:600}
+.ww-legal-note{font-size:13px;color:#445; margin:10px 0}
+.ww-legal-updated{background:#fff3cd;border:1px solid #e3c565;border-radius:8px;padding:8px 10px;font-size:14px;margin:10px 0}
+.ww-legal-btn{display:block;width:100%;min-height:48px;margin:10px 0;padding:12px 14px;font-size:16px;border-radius:10px;border:1px solid #9db2c3;background:#eef4f8;color:#17202a;cursor:pointer;box-sizing:border-box}
+.ww-legal-agree{background:#17603a;border-color:#17603a;color:#fff;font-weight:700}
+.ww-legal-page{position:fixed;inset:0;z-index:99980;background:#fff;color:#17202a;overflow:auto;padding:18px 16px 40px;box-sizing:border-box}
+.ww-legal-page .ww-legal-inner{max-width:680px;margin:0 auto}
+.ww-legal-page h2{font-size:21px}.ww-legal-page h3{font-size:17px;margin-top:18px}.ww-legal-page p,.ww-legal-page li{font-size:14.5px;line-height:1.55}
+.ww-legal-close{min-height:48px;padding:10px 18px;font-size:15px;border-radius:10px;border:1px solid #9db2c3;background:#eef4f8;cursor:pointer}
+.ww-legal-open-btn{min-height:48px}
+.ww-legal-check{display:flex;gap:10px;align-items:flex-start;margin:12px 0;font-size:15px;line-height:1.4;cursor:pointer;text-align:left}
+.ww-legal-check input{width:22px;height:22px;min-width:22px;margin-top:1px;cursor:pointer}
+.ww-legal-agree[disabled]{opacity:.45;cursor:not-allowed}
+[hidden]{display:none !important}
+</style>
+
+<div id="wwLegalOverlay" class="ww-legal-overlay" hidden>
+  <div class="ww-legal-card" role="dialog" aria-modal="true" aria-labelledby="wwLegalTitle">
+    <h2>FieldForms Template Library</h2>
+    <h3 id="wwLegalTitle" style="margin-top:2px">Terms of Use</h3>
+    <div id="wwLegalUpdated" class="ww-legal-updated" hidden>Our terms were updated (v1.0).</div>
+    <div class="ww-legal-sum">
+      <p>Your data stays on your device.</p>
+      <p>Estimates are aids, not guarantees.</p>
+      <p>You're responsible for checking outputs before you rely on them.</p>
+    </div>
+    <p class="ww-legal-note">The full Terms and Disclaimer are one tap away, now and any time in Settings → Legal.</p>
+    <button type="button" class="ww-legal-btn" id="wwLegalReadTerms">Read the full Terms</button>
+    
+    <label class="ww-legal-check" for="wwLegalCheck"><input type="checkbox" id="wwLegalCheck"><span>I have read and I agree to the Terms of Use</span></label>
+    <button type="button" class="ww-legal-btn ww-legal-agree" id="wwLegalAgree" disabled>I Agree</button>
+  </div>
+</div>
+<div id="wwLegalReader" class="ww-legal-page" hidden>
+  <div class="ww-legal-inner">
+    <button type="button" class="ww-legal-close" id="wwLegalReaderBack">← Back</button>
+    <div id="wwLegalReaderBody"></div>
+  </div>
+</div>
+<div id="wwLegalPage" class="ww-legal-page" hidden>
+  <div class="ww-legal-inner">
+    <button type="button" class="ww-legal-close" id="wwLegalPageClose">← Back</button>
+    <h2>Legal</h2>
+    <h3>Terms of Use</h3>
+    <div id="wwLegalTermsText"><h2>Terms of Use — White Wolf Digital Apps</h2>
+<p><strong>Version 1.0</strong></p>
+<p><strong>Seller: White Wolf Tree Service LLC, selling digital products under the name &quot;White Wolf Digital&quot;</strong></p>
+<p><strong>Contact: whitewolfoklahoma@gmail.com</strong></p>
+<hr>
+<h3>1. What you&#x27;re buying</h3>
+<p>Our apps (including ForgeFit AI, ForgeKitchen, TreeBid Pro, SnowBid,</p>
+<p>WashPrice Pro, RoofSquares, JobProfit Tracker, PastureLedger, and the other</p>
+<p>titles sold under White Wolf Digital) are single-file software tools. When</p>
+<p>you buy one, you are buying a <strong>license to use the file</strong>, not ownership of</p>
+<p>the software itself.</p>
+<h3>2. Your license</h3>
+<ul>
+<li>You may use the app for your own personal or business work.</li>
+<li>You may open it on your own devices (phone, tablet, computer) and move your</li>
+</ul>
+<p>  own data between them using the app&#x27;s built-in backup/export tools.</p>
+<ul>
+<li>You may <strong>not</strong> resell, redistribute, give away, upload, or share the app</li>
+</ul>
+<p>  file (or a copy of it) with anyone else — including posting it online,</p>
+<p>  bundling it with other products, or selling access to it.</p>
+<ul>
+<li>You may <strong>not</strong> claim the app as your own work, remove its branding or</li>
+</ul>
+<p>  notices, or use it to build a competing product for resale.</p>
+<ul>
+<li>One purchase = one buyer. A business purchase covers the buyer and their</li>
+</ul>
+<p>  own employees using it for that business&#x27;s work; it does not cover other</p>
+<p>  businesses.</p>
+<h3>3. Your data stays yours — and stays on your device</h3>
+<ul>
+<li>The current versions of our apps run <strong>entirely on your device</strong>. They have</li>
+</ul>
+<p>  no accounts, no sign-in, no analytics, and they collect, transmit, and store</p>
+<p>  <strong>none</strong> of your information on any server. We never see your data.</p>
+<ul>
+<li>Your records are stored in your browser/app storage on your device. **You</li>
+</ul>
+<p>  are responsible for backing them up** using the app&#x27;s export tools. If you</p>
+<p>  clear your browser data, lose your device, or uninstall the app, your</p>
+<p>  records may be permanently lost, and we cannot recover them — we never had</p>
+<p>  a copy.</p>
+<ul>
+<li>Files you export (backups, quotes, PDFs) are under your control. Where you</li>
+</ul>
+<p>  store or send them is up to you.</p>
+<h3>4. Estimates are tools, not guarantees</h3>
+<p>Every number our apps produce — bids, prices, costs, calorie targets,</p>
+<p>projections, schedules, totals — is an **estimate generated from the</p>
+<p>information you enter and the settings you choose**. Outputs are aids for</p>
+<p>your own judgment, not guarantees of price, profit, outcome, or result. You</p>
+<p>are responsible for checking any output before relying on it (see also the</p>
+<p>disclaimer that applies to your app: Health Disclaimer for fitness/nutrition</p>
+<p>apps, Estimator Disclaimer for contractor tools). If an input is wrong, the</p>
+<p>output will be wrong.</p>
+<h3>5. Acceptable use</h3>
+<p>Don&#x27;t use the apps to break the law, infringe anyone&#x27;s rights, or</p>
+<p>misrepresent quotes, invoices, or records to your own customers. For the</p>
+<p>fitness apps, the guardrails in the app (healthy-rate limits, calorie floor)</p>
+<p>are part of the product — don&#x27;t treat the app as a way around them.</p>
+<h3>6. Provided &quot;as is&quot;</h3>
+<p>The apps are provided **&quot;as is&quot; and &quot;as available,&quot; without warranties of</p>
+<p>any kind**, express or implied — including merchantability, fitness for a</p>
+<p>particular purpose, accuracy of calculations, and uninterrupted or</p>
+<p>error-free operation — to the maximum extent allowed by law. Software has</p>
+<p>bugs; browsers change; we work to fix problems but do not promise any app is</p>
+<p>error-free or will work on every device or browser forever.</p>
+<h3>7. Limitation of liability</h3>
+<p>To the maximum extent allowed by law:</p>
+<ul>
+<li>We are **not liable for indirect, incidental, special, or consequential</li>
+</ul>
+<p>  damages** — including lost profits, lost or mispriced jobs, lost data, or</p>
+<p>  business interruption — arising from use of the apps.</p>
+<ul>
+<li>Our total liability for any claim connected to an app is limited to the</li>
+</ul>
+<p>  <strong>amount you paid for that app</strong>.</p>
+<ul>
+<li>Nothing in these terms limits liability that cannot legally be limited.</li>
+</ul>
+<h3>8. Refunds</h3>
+<p>Refunds are handled **by the storefront you bought from, under that</p>
+<p>storefront&#x27;s policy** — Gumroad&#x27;s refund policy for Gumroad purchases, and</p>
+<p>Google Play&#x27;s refund policy for Play purchases. These terms do not add to,</p>
+<p>replace, or override the storefront&#x27;s refund rules. If a file is defective</p>
+<p>and won&#x27;t open, contact us at whitewolfoklahoma@gmail.com and we&#x27;ll fix or</p>
+<p>replace the file.</p>
+<h3>9. Updates and changes to these terms</h3>
+<ul>
+<li>We may release updated versions of an app. Updates may add, change, or</li>
+</ul>
+<p>  remove features.</p>
+<ul>
+<li>We may update these terms. The version you agreed to is recorded in the</li>
+</ul>
+<p>  app (version number and date) at first-run acceptance. If terms change,</p>
+<p>  the app may ask you to accept the new version once on next open. Updated</p>
+<p>  terms apply going forward, not retroactively.</p>
+<ul>
+<li>If you don&#x27;t agree to an updated version of the terms, stop using the app.</li>
+</ul>
+<h3>10. Governing law</h3>
+<p>These terms are governed by the laws of the <strong>State of Oklahoma</strong>, USA.</p>
+<p>(Attorney to confirm governing law and venue before publication.)</p>
+<h3>11. Contact</h3>
+<p>White Wolf Tree Service LLC (White Wolf Digital) —</p>
+<p>whitewolfoklahoma@gmail.com.</p>
+<hr>
+<h3>CONNECTED FEATURES — takes effect only when these features ship</h3>
+<p>*The sections below apply only to future connected features (device sync via</p>
+<p>Health Connect, AI voice logging, and the AI Goal Preview in ForgeFit). They</p>
+<p>do not apply to the current offline versions, which never transmit data.*</p>
+<ul>
+<li><strong>Opt-in only.</strong> Connected features are off by default. Each one asks for</li>
+</ul>
+<p>  your separate, explicit consent — on its own consent screen, in plain</p>
+<p>  language — before anything leaves your device. Declining never disables</p>
+<p>  the app&#x27;s offline features.</p>
+<ul>
+<li><strong>What gets sent.</strong> Only what the consent screen names, only when you use</li>
+</ul>
+<p>  the feature: for example, a meal description (text, or audio only if cloud</p>
+<p>  transcription is on) for AI voice logging, or the single photo you choose</p>
+<p>  for an AI Goal Preview.</p>
+<ul>
+<li><strong>No retention by us.</strong> Our relay service passes your request to the named</li>
+</ul>
+<p>  AI provider and keeps nothing — no copies of your photos, audio,</p>
+<p>  transcripts, or entries are stored on our servers. Provider handling is</p>
+<p>  described on the consent screen and in the Privacy Policy.</p>
+<ul>
+<li><strong>Health data stays on the device.</strong> Device sync (Health Connect) reads</li>
+</ul>
+<p>  your health data on your phone and stores it in the app on your phone. It</p>
+<p>  is not uploaded to us.</p>
+<ul>
+<li><strong>Allowances.</strong> Some connected features run on third-party AI services we</li>
+</ul>
+<p>  pay for per use, so they may include a monthly allowance described in the</p>
+<p>  app (for example, a set number of AI previews or voice entries per month),</p>
+<p>  with optional additional credits. Allowances and pricing will be shown in</p>
+<p>  the app before you use the feature; they are not a subscription unless the</p>
+<p>  app says so in plain words.</p>
+<ul>
+<li><strong>Permissions.</strong> Connected features may request device permissions (such</li>
+</ul>
+<p>  as Health Connect access or the microphone) at the moment you first use</p>
+<p>  them. You can revoke permissions any time in your device settings; the</p>
+<p>  related feature will simply stop working.</p></div>
+    
+    <h3>Privacy</h3>
+    <p>This app has no accounts and collects no data. Everything you enter is stored only on this device, in this browser's local storage. Nothing is uploaded, tracked, or shared. Exported backup files are under your control — where you store or send them is up to you. If you clear your browser data, lose your device, or uninstall the app, your records may be permanently lost, so keep backups using the app's export tools.</p>
+    <p id="wwLegalAcceptLine"></p>
+    <p><strong>Sold by White Wolf Tree Service LLC (White Wolf Digital) — whitewolfoklahoma@gmail.com</strong></p>
+  </div>
+</div>
+
+<script>
+/* White Wolf Digital — in-app legal pattern v1 (Terms acceptance + Settings > Legal) */
+const TERMS_VERSION = "1.0";
+(function(){
+  var WW_KEY = "fflib_v1";
+  var WW_SAVE = "saveState";
+  var WW_DISC = false;
+  function wwRaw(){ try{ var r = localStorage.getItem(WW_KEY); return r ? JSON.parse(r) : null; }catch(e){ return null; } }
+  function wwStateObj(){ try{ if(typeof state !== "undefined" && state && typeof state === "object") return state; }catch(e){} return null; }
+  function wwGetLegal(){
+    var st = wwStateObj(); if(st && st.legal && typeof st.legal === "object") return st.legal;
+    var r = wwRaw(); if(r && r.legal && typeof r.legal === "object") return r.legal;
+    return null;
+  }
+  function wwPersist(rec){
+    var st = wwStateObj();
+    if(st){ st.legal = rec;
+      try{ if(WW_SAVE === "saveState" && typeof saveState === "function"){ saveState(); return; } }catch(e){}
+      try{ if(WW_SAVE === "save" && typeof save === "function"){ save(); return; } }catch(e){}
+    }
+    try{ var r = wwRaw() || {}; r.legal = rec; localStorage.setItem(WW_KEY, JSON.stringify(r)); }catch(e){}
+  }
+  function wwAcceptLine(){
+    var el = document.getElementById("wwLegalAcceptLine"); if(!el) return;
+    var rec = wwGetLegal();
+    if(rec && rec.acceptedDate) el.textContent = "You agreed to Terms v" + (rec.termsVersion || TERMS_VERSION) + " on " + rec.acceptedDate + ".";
+    else el.textContent = "No acceptance recorded yet on this device.";
+  }
+  function wwShowReader(which){
+    var body = document.getElementById("wwLegalReaderBody");
+    var src = document.getElementById(which === "disc" ? "wwLegalDiscText" : "wwLegalTermsText");
+    if(!body || !src) return;
+    body.innerHTML = src.innerHTML;
+    document.getElementById("wwLegalReader").hidden = false;
+  }
+  function wwOpenLegal(){ wwAcceptLine(); document.getElementById("wwLegalPage").hidden = false; }
+  window.__wwOpenLegal = wwOpenLegal;
+  document.addEventListener("click", function(ev){
+    var t = ev.target && ev.target.closest ? ev.target.closest("[data-ww-legal]") : null;
+    if(t){ ev.preventDefault(); wwOpenLegal(); }
+  });
+  var agreeBtn = document.getElementById("wwLegalAgree");
+  var wwCheck = document.getElementById("wwLegalCheck");
+  function wwGate(){ if(agreeBtn && wwCheck) agreeBtn.disabled = !wwCheck.checked; }
+  if(wwCheck) wwCheck.addEventListener("change", wwGate);
+  wwGate();
+  if(agreeBtn) agreeBtn.addEventListener("click", function(){
+    if(wwCheck && !wwCheck.checked){ wwGate(); return; }
+    var rec = { termsVersion: TERMS_VERSION, acceptedDate: new Date().toISOString().slice(0,10), disclaimerShown: WW_DISC };
+    wwPersist(rec);
+    document.getElementById("wwLegalOverlay").hidden = true;
+    wwAcceptLine();
+  });
+  var rt = document.getElementById("wwLegalReadTerms");
+  if(rt) rt.addEventListener("click", function(){ wwShowReader("terms"); });
+  var rd = document.getElementById("wwLegalReadDisc");
+  if(rd) rd.addEventListener("click", function(){ wwShowReader("disc"); });
+  var rb = document.getElementById("wwLegalReaderBack");
+  if(rb) rb.addEventListener("click", function(){ document.getElementById("wwLegalReader").hidden = true; });
+  var pc = document.getElementById("wwLegalPageClose");
+  if(pc) pc.addEventListener("click", function(){ document.getElementById("wwLegalPage").hidden = true; });
+  var rec = wwGetLegal();
+  if(rec && rec.termsVersion === TERMS_VERSION){
+    var st2 = wwStateObj();
+    if(st2 && !st2.legal) wwPersist(rec);
+    wwAcceptLine();
+  } else {
+    if(rec && rec.termsVersion){ var u = document.getElementById("wwLegalUpdated"); if(u) u.hidden = false; }
+    document.getElementById("wwLegalOverlay").hidden = false;
+  }
+})();
+</script>
+
+</body>
+</html>
